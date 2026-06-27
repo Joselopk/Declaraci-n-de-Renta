@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Consulta Declaración de Renta 2026</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+
+font-family:'Roboto',sans-serif;
+
+background:linear-gradient(135deg,#0d47a1,#1565c0,#42a5f5);
+
+min-height:100vh;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+padding:20px;
+
+}
+
+.card{
+
+width:100%;
+
+max-width:550px;
+
+background:white;
+
+border-radius:18px;
+
+padding:35px;
+
+box-shadow:0 15px 40px rgba(0,0,0,.25);
+
+animation:aparece .5s;
+
+}
+
+@keyframes aparece{
+
+from{
+
+opacity:0;
+
+transform:translateY(25px);
+
+}
+
+to{
+
+opacity:1;
+
+transform:translateY(0);
+
+}
+
+}
+
+.logo{
+
+font-size:60px;
+
+text-align:center;
+
+margin-bottom:10px;
+
+}
+
+h1{
+
+text-align:center;
+
+color:#0d47a1;
+
+font-size:28px;
+
+margin-bottom:10px;
+
+}
+
+.subtitulo{
+
+text-align:center;
+
+color:#666;
+
+margin-bottom:30px;
+
+line-height:1.6;
+
+}
+
+label{
+
+font-weight:bold;
+
+display:block;
+
+margin-bottom:8px;
+
+font-size:17px;
+
+}
+
+input{
+
+width:100%;
+
+padding:15px;
+
+border-radius:8px;
+
+border:2px solid #ddd;
+
+font-size:22px;
+
+text-align:center;
+
+transition:.3s;
+
+}
+
+input:focus{
+
+outline:none;
+
+border-color:#1976d2;
+
+}
+
+button{
+
+width:100%;
+
+padding:15px;
+
+margin-top:18px;
+
+border:none;
+
+border-radius:8px;
+
+font-size:18px;
+
+font-weight:bold;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+#consultarBtn{
+
+background:#1976d2;
+
+color:white;
+
+}
+
+#consultarBtn:hover{
+
+background:#125ea8;
+
+}
+
+#limpiarBtn{
+
+background:#757575;
+
+color:white;
+
+}
+
+#limpiarBtn:hover{
+
+background:#616161;
+
+}
+#btnCalcular{
+
+background:#2e7d32;
+
+color:white;
+
+margin-top:15px;
+
+}
+
+#btnCalcular:hover{
+
+background:#1b5e20;
+
+}
+
+#resultado{
+
+display:none;
+
+margin-top:30px;
+
+padding:25px;
+
+border-radius:12px;
+
+background:#f8f9fb;
+
+border-left:6px solid #1976d2;
+
+animation:aparece .4s;
+
+}
+
+.fecha{
+
+font-size:24px;
+
+font-weight:bold;
+
+text-align:center;
+
+color:#c62828;
+
+margin:20px 0;
+
+line-height:1.5;
+
+}
+
+.ok{
+
+color:#2e7d32;
+
+font-weight:bold;
+
+font-size:20px;
+
+}
+
+.alerta{
+
+color:#ef6c00;
+
+font-weight:bold;
+
+font-size:20px;
+
+}
+
+.error{
+
+color:#c62828;
+
+font-weight:bold;
+
+font-size:20px;
+
+}
+
+.sancion{
+
+margin-top:20px;
+
+padding:20px;
+
+background:#ffebee;
+
+border-radius:10px;
+
+border:2px solid #c62828;
+
+}
+
+.sancion h3{
+
+color:#b71c1c;
+
+margin-bottom:10px;
+
+}
+
+.valor{
+
+font-size:34px;
+
+font-weight:bold;
+
+color:#c62828;
+
+text-align:center;
+
+margin-top:10px;
+
+}
+
+small{
+
+display:block;
+
+margin-top:15px;
+
+line-height:1.5;
+
+color:#555;
+
+}
+
+.footer{
+
+margin-top:30px;
+
+text-align:center;
+
+font-size:13px;
+
+color:#888;
+
+}
+
+@media(max-width:600px){
+
+.card{
+
+padding:20px;
+
+}
+
+h1{
+
+font-size:24px;
+
+}
+
+.fecha{
+
+font-size:20px;
+
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="card">
+
+<div class="logo">📄</div>
+
+<h1>Consulta Declaración de Renta</h1>
+
+<p class="subtitulo">
+
+Ingrese los dos últimos dígitos de su cédula para conocer la fecha límite de presentación.
+
+</p>
+
+<label>
+
+Últimos dos dígitos
+
+</label>
+
+<input
+id="digitos"
+type="text"
+maxlength="2"
+placeholder="Ej: 05"
+autocomplete="off">
+
+<button id="consultarBtn">
+
+🔍 Consultar
+
+</button>
+
+<button id="limpiarBtn">
+
+🧹 Nueva consulta
+
+</button>
+
+<div id="resultado"></div>
+
+<div style="margin-top:20px; text-align:center;">
+
+
+
+</div>
+
+<div class="footer">
+
+Consulta informativa • Declaración de Renta Personas Naturales • 2026
+
+</div>
+
+</div>
+
+<script>
+
+const SANCION_MINIMA=524000;
+
+function formatearFecha(fechaISO){
+
+    const fecha=new Date(fechaISO+"T00:00:00");
+
+    return fecha.toLocaleDateString("es-CO",{
+        weekday:"long",
+        year:"numeric",
+        month:"long",
+        day:"numeric"
+    });
+
+}
+
+function calcularDias(fechaISO){
+
+    const hoy=new Date();
+
+    hoy.setHours(0,0,0,0);
+
+    const fecha=new Date(fechaISO+"T00:00:00");
+
+    const diferencia=fecha-hoy;
+
+    return Math.ceil(diferencia/86400000);
+
+}
+
+function colorDias(dias){
+
+    if(dias>30){
+
+        return "#2e7d32";
+
+    }
+
+    if(dias>10){
+
+        return "#ef6c00";
+
+    }
+
+    return "#c62828";
+
+}
+
+function consultar(){
+
+    const digitos=document.getElementById("digitos").value.trim();
+
+    const resultado=document.getElementById("resultado");
+
+    resultado.style.display="block";
+
+    if(!/^[0-9]{2}$/.test(digitos)){
+
+        resultado.innerHTML=`
+            <div class="error">
+            Debe ingresar exactamente dos dígitos.
+            </div>
+        `;
+
+        return;
+
+    }
+
+    const fechaLimite=fechasVencimiento[digitos];
+
+    if(!fechaLimite){
+
+        resultado.innerHTML=`
+            <div class="error">
+            No existe información para esos dígitos.
+            </div>
+        `;
+
+        return;
+
+    }
+
+    const dias=calcularDias(fechaLimite);
+
+    let html="";
+
+    html+=`
+    <h2 style="text-align:center;color:#0d47a1;">
+    📅 Fecha límite
+    </h2>
+    `;
+
+    html+=`
+    <div class="fecha">
+
+    ${formatearFecha(fechaLimite)}
+
+    </div>
+    `;
+
+   if(dias>0){
+
+    html+=`
+
+    <div class="ok">
+
+        ✅ Su declaración aún no está vencida.
+
+    </div>
+
+    <br>
+
+    <div style="font-size:22px;text-align:center;color:${colorDias(dias)};">
+
+        Faltan <b>${dias}</b> días para el vencimiento.
+
+    </div>
+
+    <div class="sancion">
+
+        <h3>⚠ Si no presenta la declaración a tiempo</h3>
+
+        <p>
+
+        La sanción mínima vigente es de:
+
+        </p>
+
+        <div class="valor">
+
+        $ ${SANCION_MINIMA.toLocaleString("es-CO")}
+
+        </div>
+
+        <small>
+
+        Este valor corresponde únicamente a la sanción mínima establecida por la DIAN.
+
+        Si la sanción calculada según el Estatuto Tributario resulta mayor, deberá pagarse el valor superior.
+
+        </small>
+
+    </div>
+
+    `;
+
+}
+
+    else if(dias===0){
+
+        html+=`
+
+        <div class="alerta">
+
+        ⚠ Hoy es el último día para presentar la declaración.
+
+        </div>
+
+        `;
+
+    }
+
+    else{
+
+        const vencidos=Math.abs(dias);
+
+        html+=`
+
+        <div class="error">
+
+        ❌ La declaración está vencida.
+
+        </div>
+
+        <br>
+
+        <div style="font-size:20px;text-align:center;">
+
+        Han transcurrido
+
+        <b>${vencidos}</b>
+
+        días desde el vencimiento.
+
+        </div>
+
+        <div class="sancion">
+
+            <h3>
+
+            Sanción mínima aproximada
+
+            </h3>
+
+            <div class="valor">
+
+            $
+
+            ${SANCION_MINIMA.toLocaleString("es-CO")}
+
+            </div>
+
+            <small>
+
+            Este valor corresponde únicamente a la sanción mínima.
+
+            Dependiendo del caso particular, la DIAN puede liquidar
+
+            una sanción superior conforme al Estatuto Tributario.
+
+            </small>
+
+        </div>
+
+        `;
+
+    }
+
+    resultado.innerHTML=html;
+html += `
+
+<div style="text-align:center;margin-top:30px;">
+
+<button
+onclick="window.location.href='calcular.html'"
+style="
+background:#2e7d32;
+color:white;
+padding:15px 30px;
+font-size:18px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+">
+
+🧮 ¿Debo declarar renta?
+
+</button>
+
+</div>
+
+`;
+
+resultado.innerHTML = html;
+
+}
+
+document
+.getElementById("consultarBtn")
+.addEventListener("click",consultar);
+
+document
+.getElementById("limpiarBtn")
+.addEventListener("click",()=>{
+
+document.getElementById("digitos").value="";
+
+document.getElementById("resultado").style.display="none";
+
+document.getElementById("digitos").focus();
+
+});
+
+document
+.getElementById("digitos")
+.addEventListener("keypress",e=>{
+
+if(e.key==="Enter"){
+
+consultar();
+
+}
+
+});
+
+/*==========================
+OBJETO DE FECHAS
+==========================*/
+
+const fechasVencimiento={
+"00":"2026-10-26",
+"01":"2026-08-12",
+"02":"2026-08-12",
+"03":"2026-08-13",
+"04":"2026-08-13",
+"05":"2026-08-14",
+"06":"2026-08-14",
+"07":"2026-08-18",
+"08":"2026-08-18",
+"09":"2026-08-19",
+"10":"2026-08-19",
+"11":"2026-08-20",
+"12":"2026-08-20",
+"13":"2026-08-21",
+"14":"2026-08-21",
+"15":"2026-08-24",
+"16":"2026-08-24",
+"17":"2026-08-25",
+"18":"2026-08-25",
+"19":"2026-08-26",
+"20":"2026-08-26",
+"21":"2026-08-27",
+"22":"2026-08-27",
+"23":"2026-08-28",
+"24":"2026-08-28",
+"25":"2026-08-31",
+"26":"2026-08-31",
+"27":"2026-09-01",
+"28":"2026-09-01",
+"29":"2026-09-02",
+"30":"2026-09-02",
+"31":"2026-09-03",
+"32":"2026-09-03",
+"33":"2026-09-04",
+"34":"2026-09-04",
+"35":"2026-09-07",
+"36":"2026-09-07",
+"37":"2026-09-08",
+"38":"2026-09-08",
+"39":"2026-09-09",
+"40":"2026-09-09",
+"41":"2026-09-10",
+"42":"2026-09-10",
+"43":"2026-09-11",
+"44":"2026-09-11",
+"45":"2026-09-14",
+"46":"2026-09-14",
+"47":"2026-09-15",
+"48":"2026-09-15",
+"49":"2026-09-16",
+"50":"2026-09-16",
+"51":"2026-09-17",
+"52":"2026-09-17",
+"53":"2026-09-18",
+"54":"2026-09-18",
+"55":"2026-09-21",
+"56":"2026-09-21",
+"57":"2026-09-22",
+"58":"2026-09-22",
+"59":"2026-09-23",
+"60":"2026-09-23",
+"61":"2026-09-24",
+"62":"2026-09-24",
+"63":"2026-09-25",
+"64":"2026-09-25",
+"65":"2026-09-28",
+"66":"2026-09-28",
+"67":"2026-10-01",
+"68":"2026-10-01",
+"69":"2026-10-02",
+"70":"2026-10-02",
+"71":"2026-10-05",
+"72":"2026-10-05",
+"73":"2026-10-06",
+"74":"2026-10-06",
+"75":"2026-10-07",
+"76":"2026-10-07",
+"77":"2026-10-08",
+"78":"2026-10-08",
+"79":"2026-10-09",
+"80":"2026-10-09",
+"81":"2026-10-13",
+"82":"2026-10-13",
+"83":"2026-10-14",
+"84":"2026-10-14",
+"85":"2026-10-15",
+"86":"2026-10-15",
+"87":"2026-10-16",
+"88":"2026-10-16",
+"89":"2026-10-19",
+"90":"2026-10-19",
+"91":"2026-10-20",
+"92":"2026-10-20",
+"93":"2026-10-21",
+"94":"2026-10-21",
+"95":"2026-10-22",
+"96":"2026-10-22",
+"97":"2026-10-23",
+"98":"2026-10-23",
+"99":"2026-10-26"
+};
+
+</script>
+
+</body>
+</html>
